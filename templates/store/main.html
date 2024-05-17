@@ -7,9 +7,10 @@
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
             <link rel="shortcut icon" type="images" href="{% static 'images/icon.ico' %}">
             <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-            {% comment %} <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.3/dist/full.min.css" rel="stylesheet" type="text/css" /> {% endcomment %}
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-            {% comment %} <script src="https://cdn.tailwindcss.com"></script> {% endcomment %}
+            <script src="https://kit.fontawesome.com/13cb3564b0.js" crossorigin="anonymous"></script>
+            <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.3/dist/full.min.css" rel="stylesheet" type="text/css" />
+            {% comment %} <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> {% endcomment %}
+            <script src="https://cdn.tailwindcss.com"></script>
             <link rel="preconnect" href="https://fonts.googleapis.com">
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
             <link href="https://fonts.googleapis.com/css2?family=Glory:wght@500&display=swap" rel="stylesheet">
@@ -68,7 +69,7 @@
      </head>
      <body style="font-family:Glory, sans-serif;">
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        {% comment %} <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
           <a class="navbar-brand" href="{% url 'store' %}"><img width="40px" height="40px" src="{% static 'images/logo.png' %}"><span style="color:orange">Shopping</span> mart</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -79,12 +80,12 @@
               <li class="nav-item active">
                 <a class="nav-link" href="{% url 'store' %}">Store <span class="sr-only">(current)</span></a>
               </li>
-            </ul>
+            </ul> {% endcomment %}
 
-                {% comment %} <nav>
+                <nav>
                         <div class="navbar bg-slate-600">
                             <div class="flex-1 text-white">
-                              <a class="btn btn-ghost text-3xl px-8 "><span class="text-sky-500">Shopping</span> mart</a>
+                              <a class="btn btn-ghost text-2xl px-8 "><span class="text-sky-500">Shopping</span> mart</a>
             
                               <a href="{% url 'store' %}" class="text-xl inline-grid">store</a>
                             </div>
@@ -92,7 +93,7 @@
                             {% if user.is_authenticated %}
                             <div class="navbar-left flex">
                                 <ul class="menu menu-horizontal px-1 font-semibold text-white">
-                                    <li><button class=" bg-sky-400 text-white px-3 text-lg font-medium rounded-lg hover:bg-sky-500" ><a href="{% url 'logout' %}" >Logout</a></button></li>
+                                    <li><button class="bg-red-500 text-white px-3 text-lg font-medium rounded-lg hover:bg-red-700" ><a href="{% url 'logout' %}" >Logout</a></button></li>
                                     <li><a href="{% url 'cart' %}">
                                         <img  id="cart-icon" src="{% static 'images/cart.png' %}"><h2 class="mb-2 " id="cart-total">{{cartItems}}</h2>
                                     </a>
@@ -117,12 +118,12 @@
                             {% endif %}
                             
                         </div>
-                </nav> {% endcomment %}
+                </nav>
 
             
-            {% if user.is_authenticated %}
+            {% comment %} {% if user.is_authenticated %}
             <div class="form-inline my-2 mx-2">
-                   <a href="{% url 'logout' %}"class="btn btn-danger">Logout</a>
+                   <a href="{% url 'logout' %}"class="btn btn-danger mr-4">Logout</a>
                    <a href="{% url 'cart' %}">
                     <img  id="cart-icon" src="{% static 'images/cart.png' %}">
                    </a>
@@ -133,8 +134,8 @@
 
             {% else %}
 
-            <div class="form-inline my-2 mx-2  my-lg-2">
-                <a href="{% url 'login' %}"class="btn btn-primary">Login</a>
+            <div class="form-inline my-2 my-lg-2">
+                <a href="{% url 'login' %}"class="btn btn-primary mr-4">Login</a>
                 <a href="{% url 'cart' %}">
                     <img  id="cart-icon" src="{% static 'images/cart.png' %}">
                 </a>
@@ -144,7 +145,7 @@
             {% endif %}
 
           </div>
-        </nav>
+        </nav> {% endcomment %}
 
          <div class="container">
                 <br>

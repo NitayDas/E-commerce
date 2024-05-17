@@ -33,8 +33,8 @@ def cookieCart(request):
                 }
                 items.append(item)
 
-                if product.digital == False:
-                    order['shipping'] = True
+                # if product.digital == False:
+                order['shipping'] = True
         except:
             pass
 
@@ -55,6 +55,7 @@ def cartData(request):
         order = cookieData['order']
         items = cookieData['items']
         min_priced_item = min(items, key=lambda x: x['product']['price']) if items else None
+        print(order['get_cart_total'])
 
     return {'cartItems': cartItems, 'order': order, 'items': items, 'min_priced_item': min_priced_item}
 

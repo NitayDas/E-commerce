@@ -1,18 +1,22 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
-     <div class="row">
+
+    <header class="mt-12 ml-12">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {% for product in products %}
-        <div class="col-lg-4">
-            <img class="thumbnail" src="{{ product.imageURL }}">
-            <div class="box-element product">
-                <h6><strong>{{ product.name }}</strong></h6>
-                <hr>
-                <button data-product={{ product.id }} data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
-                <a class="btn btn-outline-primary" href="#">View</a>
-		        <h4 style="display: inline-block; float: right"><strong>${{ product.price|floatformat:2 }}</strong></h4>
-            </div>
+        <div class="rounded-md border shadow-lg">
+          <img class="thumbnail p-4" src="{{ product.imageURL }}" alt="{{ product.name }}">
+          <div class="p-4 border border-gray-200 rounded-md shadow-md">
+              <h6><strong>{{ product.name }}</strong></h6>
+              <hr class="my-2">
+              <button data-product={{ product.id }} data-action="add" class="btn btn-outline-secondary add-btn update-cart bg-slate-200 hover:bg-slate-300 mr-2">Add to Cart</button>
+              <a class="btn btn-outline-primary bg-slate-200 hover:bg-slate-300" href="#">View</a>
+              <h4 class="inline-block float-right font-bold mt-2"><strong>${{ product.price|floatformat:2 }}</strong></h4>
+          </div>
         </div>
-      {% endfor product in products %}
-    </div>
+        {% endfor %}
+      </div>
+    </header>
 {% endblock content %}

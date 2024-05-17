@@ -2,7 +2,7 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
-     <div class="row">
+      {% comment %} <div class="row">
 		<div class="col-lg-6">
 			<div class="box-element" id="form-wrapper">
 				<form id="form">
@@ -28,9 +28,9 @@
 						<div class="form-field">
 							<input class="form-control" type="text" name="state" placeholder="State..">
 						</div>
-						{% comment %} <div class="form-field">
+						<div class="form-field">
 							<input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
-						</div> {% endcomment %}
+						</div> 
 						<div class="form-field">
 							<input class="form-control" type="text" name="country" placeholder="Zip code..">
 						</div>
@@ -70,7 +70,8 @@
 							<div style="flex:2"><img class="row-image" src="{{ min_priced_item.product.imageURL }}"></div>
 							<div style="flex:2"><p>{{ min_priced_item.product.name}}</p></div>
 							<div style="flex:1"><p>Price: ${{ min_priced_item.product.price|floatformat:2 }}</p></div>
-							<div style="flex:1"><p>x{{item.quantity}}</p></div>
+							<div style="flex:1"><p>x1</p></div>
+							<div><del></del>${{min_priced_item.product.price|floatformat:2 }}</div>
 						</div>
 					{% endif %}
                  
@@ -81,11 +82,124 @@
 				{% endif %}
 				<h5>Product Price :   ${{order.get_cart_total|floatformat:2}}</h5>
 				<h5>Shipping cost :   ${{shipping_cost}}</h5>
-				<h5>Total Price : $ {{total}}</h5>
+				<h5>Total Price :     $ {{total}}</h5>
 				
 			</div>
 		</div>
-	</div>
+	</div> {% endcomment %}
+
+	{% comment %} Tailwind design {% endcomment %}
+
+       <header class="mt-12 ml-12">
+          <div class="grid grid-cols-1 gap-12  lg:grid-cols-2 ">
+			<form action="" id="form">
+			<div class="bg-slate-100 shadow-md rounded-md border p-4">
+
+				 {% comment %} user info section {% endcomment %}
+				<div id="user-info" class="mt-4">
+					<hr>
+					<p class=" text-lg font-semibold">User Information:</p>
+					<hr>
+					<div class=" mt-4">
+						<input required class="form-control w-9/12 p-2 rounded-md" type="text" name="name" placeholder="Name..">
+					</div>
+					<div class=" mt-4 mb-4">
+						<input required class="form-control w-9/12 p-2 rounded-md" type="email" name="email" placeholder="Email..">
+					</div>
+				</div>
+
+				{% comment %} shipping info section {% endcomment %}
+				<div id="shipping-info" class="mt-4">
+					<hr>
+					<p class="text-lg font-semibold">Shipping Information:</p>
+					<hr>
+					<div class="mt-4 ">
+						<input class="w-9/12 p-2 rounded-md" type="text" name="address" placeholder="Address..">
+					</div>
+					<div class="mt-4">
+						<input class="form-control w-9/12 p-2 rounded-md" type="text" name="city" placeholder="City..">
+					</div>
+					<div class="mt-4">
+						<input class="form-control w-9/12 p-2 rounded-md" type="text" name="state" placeholder="State..">
+					</div>
+					<div class="mt-4">
+						<input class="form-control w-9/12 p-2 rounded-md" type="text" name="zipcode" placeholder="Zip code..">
+					</div> 
+					<div class="mt-4 mb-8">
+						<input class="form-control w-9/12 p-2 rounded-md" type="text" name="country" placeholder="Zip code..">
+					</div>
+				</div>
+				<input id="form-button" class="btn mb-4 text-white text-lg bg-gradient-to-r from-indigo-600  via-blue-600 to-blue-300 btn-block" type="submit" value="Continue">
+			</form>
+            {% comment %} payment option {% endcomment %}
+			<div class="box-element hidden" id="payment-info">
+				<small>Paypal Options</small>
+				<button class="btn btn-outline-dark" id="make-payment">Make payment</button>
+				<div id="paypal-button-container"></div>
+			</div>
+
+			</div>
+
+			
+
+
+			<div class="bg-slate-100 shadow-md rounded-md border p-4">
+				  <a class="btn btn-outline  mb-2" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+				  <hr>
+					<div class="grid grid-cols-5 gap-2 text-lg font-semibold mb-4 mt-8 ">
+						<h2></h2>
+						<h2 class=" text-black">Product</h2>
+						<h2 class=" text-black">Price</h2>
+						<h2 class=" text-black">Quantity</h2>
+						<h2 class=" text-black">Total Price</h2>
+					</div>
+			
+					{% for item in items %}
+					<hr>
+					<div class="grid grid-cols-5 gap-2 text-[16px] mb-2">
+						<div><img class="row-image" src="{{item.product.imageURL}}"></div>
+						<div><p>{{item.product.name}}</p></div>
+						<div><p>${{item.product.price|floatformat:2}}</p></div>
+						<div>
+							<p class="quantity">{{item.quantity}}</p>
+							<div class="quantity">
+								<img data-product="{{item.product.id}}" data-action="add" class="chg-quantity update-cart" src="{% static  'images/arrow-up.png' %}">
+			
+								<img data-product="{{item.product.id}}" data-action="remove" class="chg-quantity update-cart" src="{% static  'images/arrow-down.png' %}">
+							</div>
+						</div>
+						<div ><p>${{item.get_total|floatformat:2}}</p></div>
+					</div>
+					<hr>
+					{% endfor %}
+
+					{% if cartItems >= 5 and min_priced_item %}
+					<h2 class="text-center text-xl font-medium text-indigo-800 mb-4 mt-4">Congratulations! You have received a free product</h2>
+						<div class="grid grid-cols-5 gap-2 mb-4">
+							<div><img class="row-image" src="{{ min_priced_item.product.imageURL }}"></div>
+							<div><p>{{ min_priced_item.product.name}}</p></div>
+							<div><p> ${{ min_priced_item.product.price|floatformat:2 }}</p></div>
+							<div><p>x1</p></div>
+							<div ><del class="">${{min_priced_item.product.price|floatformat:2}}</del></div>
+						</div>
+						<hr>
+					{% endif %}
+                 
+                    <div class="text-lg p-6 space-y-2 mt-4">
+					<h5 class="text-black">Products<span class="font-medium ml-8"> :  {{order.get_cart_items}}</span></h5>
+					{% if cartItems >= 5 %}
+					<h5 class="text-black">Bonus Product<span class="font-medium" > :  1</span></h5>
+					{% endif %}
+					<h5 class="text-black">Product Price<span class="font-medium"> :  ${{order.get_cart_total|floatformat:2}}</span></h5>
+					<h5 class="text-black">Shipping cost<span class="font-medium"> : ${{shipping_cost}}</span> </h5>
+					<h5 class="text-black">Total<span class="font-medium ml-16"> : ${{total}}</span> </h5>
+				   </div>
+			</div>
+
+		  </div>
+	  </header> 
+
+
 
      <script src="https://www.paypal.com/sdk/js?client-id=AX-VrJu4eVcZgosPFC05U3X6XhpsOyfGU-M3TmlAXB6f4Z6Di6VZIHzMseRlKX3dWyuKn8dFJzTvnnP4&currency=USD&disable-funding=credit"></script>
 

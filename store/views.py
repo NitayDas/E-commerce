@@ -76,8 +76,12 @@ def checkout(request):
     order = data['order']
     items = data['items']
     min_priced_item=data['min_priced_item']
-    shipping_cost= int(cartItems/5) * 5
-    total= shipping_cost + order.get_cart_total 
+    shipping_cost= int((cartItems+4)/5) * 5
+    if request.user.is_authenticated:
+        total= shipping_cost + order.get_cart_total
+    else:
+        total= shipping_cost + order['get_cart_total']
+    print(shipping_cost) 
           
 
     context = {'items': items, 'order': order, 'cartItems': cartItems, 'min_priced_item': min_priced_item,
