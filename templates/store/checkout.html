@@ -79,8 +79,9 @@
 				{% if cartItems >= 5 %}
 				<h5>Bonus Item: 1 </h5>
 				{% endif %}
-				<h5>Product Total:   ${{order.get_cart_total|floatformat:2}}</h5>
-				<h5>Shipping cost:   ${{order.get_cart_total|floatformat:2}}</h5>
+				<h5>Product Price :   ${{order.get_cart_total|floatformat:2}}</h5>
+				<h5>Shipping cost :   ${{shipping_cost}}</h5>
+				<h5>Total Price : $ {{total}}</h5>
 				
 			</div>
 		</div>
