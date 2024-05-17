@@ -2,9 +2,14 @@ from django.shortcuts import render
 from django.http import JsonResponse
 import json
 import datetime
-
+from django.shortcuts import render, HttpResponse,redirect
+from django.contrib.auth import authenticate,login as auth_login,logout
+from django.contrib.auth.decorators import login_required
 from .models import *
 from .utils import cookieCart, cartData, guestOrder
+from django.contrib.auth.models import User
+from .models import Customer
+
 
 
 def store(request):
@@ -17,6 +22,40 @@ def store(request):
     products = Product.objects.all()
     context = {'products': products, 'cartItems': cartItems}
     return render(request, 'store/store.html', context)
+
+
+def login(request):
+    if request.method=='POST':
+        username=request.POST.get('username')
+        password=request.POST.get('password')
+        user=authenticate(request, username=username,password=password)
+        if user is not None:
+            auth_login(request,user)
+            return redirect('store')
+        else:
+            return HttpResponse('Invalid Username or Password !')
+    return render(request, 'store/login.html')
+
+def logoutpage(request):
+    logout(request)
+    return redirect('store')
+
+def signup(request):
+     if request.method=='POST':
+        username=request.POST.get('username')
+        email=request.POST.get('email')
+        password1=request.POST.get('password1')
+        password2=request.POST.get('password2')
+        
+        if password1!=password2:
+            return HttpResponse('Invalid confirm password !')
+        else:
+            user = User.objects.create_user(username, email, password1)
+            customer = Customer.objects.create(user=user, name=username, email=email)
+            customer.save()
+            return redirect('login')
+        
+     return render(request,'store/signup.html')
 
 
 def cart(request):
@@ -32,12 +71,14 @@ def cart(request):
 
 def checkout(request):
     data = cartData(request)
-
+    
     cartItems = data['cartItems']
     order = data['order']
     items = data['items']
+    min_priced_item=data['min_priced_item']
+          
 
-    context = {'items': items, 'order': order, 'cartItems': cartItems}
+    context = {'items': items, 'order': order, 'cartItems': cartItems, 'min_priced_item': min_priced_item}
     return render(request, 'store/checkout.html', context)
 
 

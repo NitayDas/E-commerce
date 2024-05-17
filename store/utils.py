@@ -47,13 +47,16 @@ def cartData(request):
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
+        min_priced_item = min(items, key=lambda x: x.product.price) if items else None
+        
     else:
         cookieData = cookieCart(request)
         cartItems = cookieData['cartItems']
         order = cookieData['order']
         items = cookieData['items']
+        min_priced_item = min(items, key=lambda x: x['product']['price']) if items else None
 
-    return {'cartItems': cartItems, 'order': order, 'items': items}
+    return {'cartItems': cartItems, 'order': order, 'items': items, 'min_priced_item': min_priced_item}
 
 
 def guestOrder(request, data):

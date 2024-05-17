@@ -7,8 +7,9 @@
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
             <link rel="shortcut icon" type="images" href="{% static 'images/icon.ico' %}">
             <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+            {% comment %} <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.3/dist/full.min.css" rel="stylesheet" type="text/css" /> {% endcomment %}
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-          
+            {% comment %} <script src="https://cdn.tailwindcss.com"></script> {% endcomment %}
             <link rel="preconnect" href="https://fonts.googleapis.com">
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
             <link href="https://fonts.googleapis.com/css2?family=Glory:wght@500&display=swap" rel="stylesheet">
@@ -65,10 +66,10 @@
 
             </script>
      </head>
-     <body style="font-family: 'Glory', sans-serif;">
+     <body style="font-family:Glory, sans-serif;">
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-          <a class="navbar-brand" href="{% url 'store' %}"><img width="40px" height="40px" src="{% static 'images/logo.png' %}">e-Commerce</a>
+          <a class="navbar-brand" href="{% url 'store' %}"><img width="40px" height="40px" src="{% static 'images/logo.png' %}"><span style="color:orange">Shopping</span> mart</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -79,13 +80,68 @@
                 <a class="nav-link" href="{% url 'store' %}">Store <span class="sr-only">(current)</span></a>
               </li>
             </ul>
-            <div class="form-inline my-2 my-lg-0">
-                <a href="#"class="btn btn-primary">Login</a>
+
+                {% comment %} <nav>
+                        <div class="navbar bg-slate-600">
+                            <div class="flex-1 text-white">
+                              <a class="btn btn-ghost text-3xl px-8 "><span class="text-sky-500">Shopping</span> mart</a>
+            
+                              <a href="{% url 'store' %}" class="text-xl inline-grid">store</a>
+                            </div>
+                             
+                            {% if user.is_authenticated %}
+                            <div class="navbar-left flex">
+                                <ul class="menu menu-horizontal px-1 font-semibold text-white">
+                                    <li><button class=" bg-sky-400 text-white px-3 text-lg font-medium rounded-lg hover:bg-sky-500" ><a href="{% url 'logout' %}" >Logout</a></button></li>
+                                    <li><a href="{% url 'cart' %}">
+                                        <img  id="cart-icon" src="{% static 'images/cart.png' %}"><h2 class="mb-2 " id="cart-total">{{cartItems}}</h2>
+                                    </a>
+                                    <li>
+                    
+                                    <li><a class="text-green-400 ml-4  rounded-circle p-2" style="background-color:white">{{user.username}}</a></li>
+                                </ul>
+                            </div>
+
+                            {% else %}
+
+                            <div class="navbar-left flex">
+                              <ul class="menu menu-horizontal px-4 font-semibold text-white">
+                                <li><button class=" bg-sky-400 text-white px-3 text-lg font-medium rounded-lg hover:bg-sky-500" style ><a href="{% url 'login' %}" >Login</a></button></li>
+                                  <li ><a href="{% url 'cart' %}"><img  id="cart-icon" src="{% static 'images/cart.png' %}"> </a>
+                                   
+                                   </li>
+                                   <p id="cart-total">{{cartItems}}</p>
+                                   
+                               </ul>
+                            </div>
+                            {% endif %}
+                            
+                        </div>
+                </nav> {% endcomment %}
+
+            
+            {% if user.is_authenticated %}
+            <div class="form-inline my-2 mx-2">
+                   <a href="{% url 'logout' %}"class="btn btn-danger">Logout</a>
+                   <a href="{% url 'cart' %}">
+                    <img  id="cart-icon" src="{% static 'images/cart.png' %}">
+                   </a>
+                   <p id="cart-total">{{ cartItems }}</p>
+
+                <a class="text-black ml-4 d-inline-block rounded-circle p-2" style="background-color:white">{{user.username}}</a>
+            </div>
+
+            {% else %}
+
+            <div class="form-inline my-2 mx-2  my-lg-2">
+                <a href="{% url 'login' %}"class="btn btn-primary">Login</a>
                 <a href="{% url 'cart' %}">
                     <img  id="cart-icon" src="{% static 'images/cart.png' %}">
                 </a>
                 <p id="cart-total">{{ cartItems }}</p>
             </div>
+
+            {% endif %}
 
           </div>
         </nav>
@@ -99,7 +155,7 @@
                 <br>
          </div>
 
-      <nav class="navbar navbar-expand-lg navbar-light bg-light"><span style="font-family: 'Glory', sans-serif; color: black; margin-top: 2%; margin-left: 540px;"> ©️ Build by Ruhul Amin Parvez with ❤️ </span></nav>
+      {% comment %} <nav class="navbar navbar-expand-lg navbar-light bg-light"><span style="font-family: 'Glory', sans-serif; color: black; margin-top: 2%; margin-left: 540px;">  </span></nav> {% endcomment %}
 
       <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 

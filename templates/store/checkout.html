@@ -1,3 +1,4 @@
+
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
@@ -27,9 +28,9 @@
 						<div class="form-field">
 							<input class="form-control" type="text" name="state" placeholder="State..">
 						</div>
-						<div class="form-field">
+						{% comment %} <div class="form-field">
 							<input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
-						</div>
+						</div> {% endcomment %}
 						<div class="form-field">
 							<input class="form-control" type="text" name="country" placeholder="Zip code..">
 						</div>
@@ -55,16 +56,32 @@
 				<hr>
 				<h3>Order Summary</h3>
 				<hr>
-				{% for item in items %}
-				<div class="cart-row">
-					<div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
-					<div style="flex:2"><p>{{item.product.name}}</p></div>
-					<div style="flex:1"><p>${{item.product.price|floatformat:2}}</p></div>
-					<div style="flex:1"><p>x{{item.quantity}}</p></div>
-				</div>
-				{% endfor %}
+					{% for item in items %}
+					<div class="cart-row">
+						<div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
+						<div style="flex:2"><p>{{item.product.name}}</p></div>
+						<div style="flex:1"><p>${{item.product.price|floatformat:2}}</p></div>
+						<div style="flex:1"><p>x{{item.quantity}}</p></div>
+					</div>
+					{% endfor %}
+					{% if cartItems >= 5 and min_priced_item %}
+					<h2 class="text-center text-xl font-medium text-green-500 mb-4">Congratulations! You have received a free product</h2>
+						<div class="cart-row">
+							<div style="flex:2"><img class="row-image" src="{{ min_priced_item.product.imageURL }}"></div>
+							<div style="flex:2"><p>{{ min_priced_item.product.name}}</p></div>
+							<div style="flex:1"><p>Price: ${{ min_priced_item.product.price|floatformat:2 }}</p></div>
+							<div style="flex:1"><p>x{{item.quantity}}</p></div>
+						</div>
+					{% endif %}
+                 
+
 				<h5>Items:   {{order.get_cart_items}}</h5>
-				<h5>Total:   ${{order.get_cart_total|floatformat:2}}</h5>
+				{% if cartItems >= 5 %}
+				<h5>Bonus Item: 1 </h5>
+				{% endif %}
+				<h5>Product Total:   ${{order.get_cart_total|floatformat:2}}</h5>
+				<h5>Shipping cost:   ${{order.get_cart_total|floatformat:2}}</h5>
+				
 			</div>
 		</div>
 	</div>
@@ -105,6 +122,7 @@
 
 	<script type="text/javascript">
 		var shipping = '{{order.shipping}}'
+		{% comment %} var shipping = True {% endcomment %}
 
 		if (shipping == 'False'){
 		 	document.getElementById('shipping-info').innerHTML = ''
