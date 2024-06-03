@@ -69,37 +69,33 @@
      </head>
      <body style="font-family:Glory, sans-serif;">
 
-        {% comment %} <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-          <a class="navbar-brand" href="{% url 'store' %}"><img width="40px" height="40px" src="{% static 'images/logo.png' %}"><span style="color:orange">Shopping</span> mart</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="{% url 'store' %}">Store <span class="sr-only">(current)</span></a>
-              </li>
-            </ul> {% endcomment %}
-
                 <nav>
                         <div class="navbar bg-slate-600">
                             <div class="flex-1 text-white">
                               <a class="btn btn-ghost text-2xl px-8 "><span class="text-sky-500">Shopping</span> mart</a>
-            
+                              {% if user.is_superuser %}
+                              <a class="text-xl inline-grid" href="{% url 'admin_view' %}">Admin Dashboard</a>
+                              
+                              {% else %}
                               <a href="{% url 'store' %}" class="text-xl inline-grid">store</a>
+                              <a href="{% url 'order_info' %}" class="ml-16 text-xl inline-grid">Track Order</a>
+                              {% endif %}
+
+                              <a href="{% url 'refund_lists' %}" class="text-xl inline-grid ml-16">Refund requests</a>
                             </div>
                              
                             {% if user.is_authenticated %}
                             <div class="navbar-left flex">
                                 <ul class="menu menu-horizontal px-1 font-semibold text-white">
                                     <li><button class="bg-red-500 text-white px-3 text-lg font-medium rounded-lg hover:bg-red-700" ><a href="{% url 'logout' %}" >Logout</a></button></li>
+                                    {% if not user.is_superuser %}
                                     <li><a href="{% url 'cart' %}">
                                         <img  id="cart-icon" src="{% static 'images/cart.png' %}"><h2 class="mb-2 " id="cart-total">{{cartItems}}</h2>
                                     </a>
-                                    <li>
+                                    </li>
                     
                                     <li><a class="text-green-400 ml-4  rounded-circle p-2" style="background-color:white">{{user.username}}</a></li>
+                                    {% endif %}
                                 </ul>
                             </div>
 
@@ -119,33 +115,6 @@
                             
                         </div>
                 </nav>
-
-            
-            {% comment %} {% if user.is_authenticated %}
-            <div class="form-inline my-2 mx-2">
-                   <a href="{% url 'logout' %}"class="btn btn-danger mr-4">Logout</a>
-                   <a href="{% url 'cart' %}">
-                    <img  id="cart-icon" src="{% static 'images/cart.png' %}">
-                   </a>
-                   <p id="cart-total">{{ cartItems }}</p>
-
-                <a class="text-black ml-4 d-inline-block rounded-circle p-2" style="background-color:white">{{user.username}}</a>
-            </div>
-
-            {% else %}
-
-            <div class="form-inline my-2 my-lg-2">
-                <a href="{% url 'login' %}"class="btn btn-primary mr-4">Login</a>
-                <a href="{% url 'cart' %}">
-                    <img  id="cart-icon" src="{% static 'images/cart.png' %}">
-                </a>
-                <p id="cart-total">{{ cartItems }}</p>
-            </div>
-
-            {% endif %}
-
-          </div>
-        </nav> {% endcomment %}
 
          <div class="container">
                 <br>

@@ -10,7 +10,7 @@ def cookieCart(request):
         print('CART:', cart)
 
     items = []
-    order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
+    order = {'get_cart_total': 0, 'get_cart_items': 0,'get_discount_price':0 ,'shipping': False}
     cartItems = order['get_cart_items']
 
     for i in cart:
@@ -21,15 +21,21 @@ def cookieCart(request):
 
                 product = Product.objects.get(id=i)
                 total = (product.price * cart[i]['quantity'])
+                discount_total = product.discount_price * cart[i]['quantity']
+                
 
                 order['get_cart_total'] += total
                 order['get_cart_items'] += cart[i]['quantity']
+                order['get_discount_price'] += discount_total
 
                 item = {
                     'id': product.id,
                     'product': {'id': product.id, 'name': product.name, 'price': product.price,
-                                'imageURL': product.imageURL}, 'quantity': cart[i]['quantity'],
-                    'digital': product.digital, 'get_total': total,
+                                'discount_price':product.discount_price,'imageURL': product.imageURL}, 
+                    'quantity': cart[i]['quantity'],
+                    'digital': product.digital, 
+                    'get_total': total,
+                    'with_discount_get_total': discount_total
                 }
                 items.append(item)
 
@@ -44,7 +50,7 @@ def cookieCart(request):
 def cartData(request):
     if request.user.is_authenticated:
         customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
+        order, created = Order.objects.get_or_create(customer=customer, status='not_ordered')
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
         min_priced_item = min(items, key=lambda x: x.product.price) if items else None
@@ -55,7 +61,6 @@ def cartData(request):
         order = cookieData['order']
         items = cookieData['items']
         min_priced_item = min(items, key=lambda x: x['product']['price']) if items else None
-        print(order['get_cart_total'])
 
     return {'cartItems': cartItems, 'order': order, 'items': items, 'min_priced_item': min_priced_item}
 
@@ -75,7 +80,7 @@ def guestOrder(request, data):
 
     order = Order.objects.create(
         customer=customer,
-        complete=False,
+        status = 'not_ordered'
     )
 
     for item in items:
